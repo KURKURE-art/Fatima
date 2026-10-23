@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love 💗</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #ffe0eb, #fff5f8, #ffd6e7);
+            font-family: 'Nunito', sans-serif;
+            color: #b83267;
+        }
+
+        .screen {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 25px;
+        }
+
+        #intro {
+            overflow: hidden;
+        }
+
+        .track {
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .train {
+            width: max-content;
+            white-space: nowrap;
+            font-size: clamp(1.5rem, 5vw, 3.5rem);
+            font-weight: 900;
+            position: absolute;
+            left: 0;
+            opacity: 0;
+            animation: trainMove 7s linear forwards;
+        }
+
+        .train.one {
+            animation-delay: 0s;
+        }
+
+        .train.two {
+            animation-delay: 7.5s;
+        }
+
+        .train.three {
+            animation-delay: 15s;
+            font-size: clamp(1.1rem, 3.5vw, 2.2rem);
+        }
+
+        @keyframes trainMove {
+            0% {
+                transform: translateX(100vw);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(-100%);
+                opacity: 1;
+            }
+        }
+
+        /* Maths page */
+
+        #quiz {
+            display: none;
+            flex-direction: column;
+            animation: appear 1s ease;
+        }
+
+        .quiz-card {
+            width: min(100%, 520px);
+            background: rgba(255,255,255,0.88);
+            padding: clamp(25px, 6vw, 42px);
+            border: 2px solid #ffd0e1;
+            border-radius: 30px;
+            box-shadow: 0 15px 45px rgba(184,50,103,0.13);
+        }
+
+        .sticker {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-size: clamp(1.8rem, 6vw, 2.7rem);
+            margin-bottom: 12px;
+        }
+
+        .subtitle {
+            color: #936c7e;
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .progress {
+            font-size: 0.9rem;
+            color: #b83267;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        .question {
+            background: #fff0f6;
+            border-radius: 20px;
+            padding: 22px 12px;
+            font-size: clamp(2rem, 8vw, 3rem);
+            font-weight: 900;
+            margin-bottom: 20px;
+        }
+
+        input {
+            width: 100%;
+            border: 2px solid #f5b6ce;
+            background: #fffafd;
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            outline: none;
+            color: #b83267;
+            font-family: inherit;
+            font-size: 1.2rem;
+            font-weight: 800;
+            margin-bottom: 14px;
+        }
+
+        input:focus {
+            border-color: #d94e87;
+            box-shadow: 0 0 0 4px #ffe0eb;
+        }
+
+        input::placeholder {
+            color: #d5a1b7;
+            font-size: 0.95rem;
+        }
+
+        button {
+            width: 100%;
+            border: none;
+            border-radius: 16px;
+            background: #d94e87;
+            color: white;
+            font-family: inherit;
+            font-size: 1.05rem;
+            font-weight: 900;
+            padding: 15px;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        button:hover {
+            background: #b83267;
+            transform: translateY(-2px);
+        }
+
+        .feedback {
+            min-height: 55px;
+            margin-top: 17px;
+            line-height: 1.7;
+            font-weight: 800;
+        }
+
+        .wrong {
+            color: #d6336c;
+        }
+
+        .right {
+            color: #38875b;
+        }
+
+        #finish {
+            display: none;
+            text-align: center;
+            max-width: 520px;
+        }
+
+        #finish .big-heart {
+            font-size: 5rem;
+            animation: heartbeat 1s infinite;
+        }
+
+        #finish p {
+            color: #936c7e;
+            line-height: 1.8;
+            margin: 15px 0 25px;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes heartbeat {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+        }
+
+        /* Floating hearts */
+
+        .heart {
+            position: fixed;
+            bottom: -40px;
+            pointer-events: none;
+            z-index: 5;
+            animation: floatUp 7s linear forwards;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0);
+                opacity: 0;
+            }
+
+            15% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(35deg);
+                opacity: 0;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- WELCOME ANIMATION -->
+
+    <section id="intro" class="screen">
+        <div class="track">
+            <div class="train one">HELLOW MY LOVE &lt;3 💗</div>
+
+            <div class="train two">I GOT SOMETHING FOR YOU 💌</div>
+
+            <div class="train three">
+                SOMETHING TO READ 📖 &nbsp;
+                SOMETHING TO LISTEN 🎧 &nbsp;
+                SOMETHING TO WATCH 🎬 &nbsp;
+                AND A LITTLE BIT TO ADMIRE 🥹💖
+            </div>
+        </div>
+    </section>
+
+    <!-- MATHS CHALLENGE -->
+
+    <section id="quiz" class="screen">
+        <div class="quiz-card" id="quizCard">
+
+            <div class="sticker">🧸💕</div>
+
+            <h1>Hey, smarty pants!</h1>
+
+            <p class="subtitle">
+                Before we continue, my love, I have a tiny challenge for you! 🥹
+                <br>Let's see those brilliant maths skills. 💗
+            </p>
+
+            <div class="progress" id="progress">QUESTION 1 OF 4</div>
+
+            <div class="question" id="question">11 × 13 = ?</div>
+
+            <form id="answerForm">
+                <input
+                    type="number"
+                    id="answer"
+                    placeholder="Write your answer here, cutie 💗"
+                    autocomplete="off"
+                    required
+                >
+
+                <button type="submit" id="submitButton">
+                    Check my answer 💌
+                </button>
+            </form>
+
+            <div class="feedback" id="feedback" aria-live="polite"></div>
+
+        </div>
+
+        <div id="finish">
+            <div class="big-heart">💖</div>
+            <h1>YAYYY, MY LOVE! 🥹</h1>
+            <p>
+                You did it, smarty pants! 💗
+                <br>I'm so proud of you, my love. Mwah! 😘
+            </p>
+            <p>Now, are you ready for what's next? 🎀</p>
+            <div style="font-size:2.5rem">🌷 🧸 💌</div>
+        </div>
+    </section>
+
+    <script>
+        /* WELCOME PAGE TIMING */
+
+        const intro = document.getElementById("intro");
+        const quiz = document.getElementById("quiz");
+
+        setTimeout(() => {
+            intro.style.display = "none";
+            quiz.style.display = "flex";
+        }, 22500);
+
+
+        /* MATHS GAME */
+
+        const questions = [
+            { text: "11 × 13 = ?", answer: 143 },
+            { text: "100 + 43 = ?", answer: 143 },
+            { text: "200 − 57 = ?", answer: 143 },
+            { text: "286 ÷ 2 = ?", answer: 143 }
+        ];
+
+        let currentQuestion = 0;
+
+        const questionElement = document.getElementById("question");
+        const progressElement = document.getElementById("progress");
+        const answerInput = document.getElementById("answer");
+        const feedback = document.getElementById("feedback");
+        const answerForm = document.getElementById("answerForm");
+        const submitButton = document.getElementById("submitButton");
+
+        function showQuestion() {
+            const q = questions[currentQuestion];
+
+            questionElement.textContent = q.text;
+            progressElement.textContent =
+                `QUESTION ${currentQuestion + 1} OF ${questions.length}`;
+
+            answerInput.value = "";
+            answerInput.disabled = false;
+            submitButton.disabled = false;
+            submitButton.textContent = "Check my answer 💌";
+
+            feedback.textContent = "";
+            feedback.className = "feedback";
+
+            answerInput.focus();
+        }
+
+        answerForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const userAnswer = answerInput.value.trim();
+
+            if (userAnswer === "") return;
+
+            if (Number(userAnswer) === questions[currentQuestion].answer) {
+
+                feedback.textContent =
+                    "YAYYY! THAT'S RIGHT, MY LOVE! MWAAH! 💋💗";
+                feedback.className = "feedback right";
+
+                answerInput.disabled = true;
+                submitButton.disabled = true;
+
+                sendHearts(12);
+
+                currentQuestion++;
+
+                if (currentQuestion < questions.length) {
+                    submitButton.textContent = "Next question 💗";
+                    submitButton.disabled = false;
+
+                    // Move to the next question only after she presses Next.
+                    submitButton.onclick = function(event) {
+                        event.preventDefault();
+                        submitButton.onclick = null;
+                        showQuestion();
+                    };
+
+                } else {
+                    submitButton.textContent = "Finish 💖";
+                    submitButton.disabled = false;
+
+                    // Open the album page when Finish is clicked.
+                    submitButton.onclick = function(event) {
+                        event.preventDefault();
+                        window.location.href = "index2.html";
+                    };
+                }
+
+            } else {
+                feedback.textContent =
+                    "Mwah! MY LOVE, It was right according to you, but it wasn't, Mwah! 😘💕";
+
+                feedback.className = "feedback wrong";
+
+                // Same question stays on screen until she gets it right.
+                answerInput.value = "";
+                answerInput.focus();
+
+                sendHearts(5);
+            }
+        });
+
+
+        /* FLOATING HEARTS */
+
+        const heartEmojis = ["💗", "💕", "💖", "🌸", "♡"];
+
+        function sendHearts(amount = 8) {
+            for (let i = 0; i < amount; i++) {
+                const heart = document.createElement("div");
+
+                heart.className = "heart";
+                heart.textContent =
+                    heartEmojis[
+                        Math.floor(Math.random() * heartEmojis.length)
+                    ];
+
+                heart.style.left = Math.random() * 100 + "vw";
+                heart.style.fontSize = (15 + Math.random() * 22) + "px";
+                heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+
+                document.body.appendChild(heart);
+
+                setTimeout(() => heart.remove(), 8500);
+            }
+        }
+
+        setInterval(() => sendHearts(1), 800);
+
+
+        /* SHOW FIRST QUESTION */
+
+        showQuestion();
+    </script>
+
+</body>
+</html>

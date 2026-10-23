@@ -1,0 +1,986 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Little Something for You 💗</title>
+<link href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles:wght@400;700&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+    min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    background:linear-gradient(135deg,#fff0f5,#ffe1eb,#fff7fb);
+    color:#8e2455;
+    overflow-x:hidden;
+}
+
+button{font-family:inherit}
+
+.hearts{
+    position:fixed;
+    inset:0;
+    overflow:hidden;
+    pointer-events:none;
+    z-index:0;
+}
+
+.heart{
+    position:absolute;
+    bottom:-50px;
+    font-size:22px;
+    opacity:0;
+    animation:floatHeart 9s linear infinite;
+}
+.heart:nth-child(1){left:8%}
+.heart:nth-child(2){left:25%;animation-delay:2s}
+.heart:nth-child(3){left:43%;animation-delay:4s}
+.heart:nth-child(4){left:67%;animation-delay:1s}
+.heart:nth-child(5){left:86%;animation-delay:3s}
+.song-list {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 25px;
+    text-align: left;
+}
+
+.song {
+    background: #fff0f5;
+    border: 1px solid #f3c4d6;
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.song h3 {
+    color: #c34d7c;
+    margin: 0 0 12px;
+    font-size: 17px;
+}
+
+.song audio {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
+@keyframes floatHeart{
+    0%{transform:translateY(0);opacity:0}
+    15%,85%{opacity:.7}
+    100%{transform:translateY(-115vh) rotate(35deg);opacity:0}
+}
+
+.container{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    width:100%;
+    padding:55px 22px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+}
+
+.eyebrow{
+    font-size:.78rem;
+    letter-spacing:4px;
+    text-transform:uppercase;
+    color:#c26a91;
+    margin-bottom:14px;
+}
+
+h1,h2,.album-name{
+    font-family:'Fuzzy Bubbles',cursive;
+}
+
+h1{
+    font-size:clamp(2rem,6vw,3.5rem);
+    line-height:1.3;
+    margin-bottom:12px;
+}
+
+.subtitle{
+    max-width:540px;
+    line-height:1.8;
+    font-size:.95rem;
+    color:#a45175;
+    margin-bottom:38px;
+}
+
+.album-grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:22px;
+    width:min(760px,100%);
+}
+
+.album{
+    position:relative;
+    min-height:210px;
+    padding:24px 16px;
+    border:2px solid rgba(255,255,255,.9);
+    border-radius:24px;
+    box-shadow:0 10px 25px rgba(158,55,100,.12);
+    cursor:pointer;
+    color:#8e2455;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:9px;
+    transition:transform .25s,box-shadow .25s;
+    overflow:hidden;
+}
+
+.album:nth-child(1){background:linear-gradient(145deg,#fffafd,#ffd9e8)}
+.album:nth-child(2){background:linear-gradient(145deg,#fffafd,#f6dafa)}
+.album:nth-child(3){background:linear-gradient(145deg,#fffafd,#ffe6d9)}
+.album:nth-child(4){background:linear-gradient(145deg,#fffafd,#ffe0ef)}
+
+.album::before{
+    content:"";
+    position:absolute;
+    width:75px;
+    height:20px;
+    background:rgba(255,255,255,.65);
+    top:10px;
+    left:50%;
+    transform:translateX(-50%) rotate(-4deg);
+    border-radius:4px;
+}
+
+.album:hover{
+    transform:translateY(-7px) scale(1.03);
+    box-shadow:0 17px 35px rgba(158,55,100,.2);
+}
+
+.album-icon{font-size:3.2rem;line-height:1.3;margin-top:5px}
+.album-name{font-size:1.65rem;font-weight:700}
+.album-description{font-size:.75rem;line-height:1.5;color:#a45175}
+
+.bottom-note{
+    margin-top:32px;
+    font-family:'Fuzzy Bubbles',cursive;
+    font-size:1rem;
+    color:#b35d82;
+}
+
+.popup{
+    position:fixed;
+    inset:0;
+    z-index:10;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:rgba(92,32,59,.35);
+    backdrop-filter:blur(7px);
+}
+
+.popup.show{display:flex}
+
+
+.popup-card {
+    position: relative;
+    width: min(900px, 95%);
+    max-height: 85vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 45px 55px;
+    background: #fff8fb;
+    border: 2px solid white;
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(85, 20, 49, 0.2);
+    text-align: center;
+
+    /* Smooth scrolling */
+    scroll-behavior: smooth;
+
+    /* Pink scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: #e88bb0 #fff0f5;
+}
+
+/* Pink scrollbar for Chrome, Edge and other Chromium browsers */
+.popup-card::-webkit-scrollbar {
+    width: 9px;
+}
+
+.popup-card::-webkit-scrollbar-track {
+    background: #fff0f5;
+    border-radius: 10px;
+}
+
+.popup-card::-webkit-scrollbar-thumb {
+    background: #e88bb0;
+    border-radius: 10px;
+}
+
+.popup-card::-webkit-scrollbar-thumb:hover {
+    background: #d96d9a;
+}
+
+@media (max-width: 600px) {
+    .popup-card {
+        width: 100%;
+        max-height: 90vh;
+        padding: 28px 20px;
+    }
+}
+
+
+.popup-icon{font-size:3.5rem;margin-bottom:12px}
+.popup-card h2{font-size:1.8rem;margin-bottom:12px}
+.popup-card p{color:#a45175;line-height:1.8;font-size:.92rem}
+
+.close-btn,.back-btn,.navbtn{
+    border:none;
+    border-radius:30px;
+    padding:12px 22px;
+    background:#e88bb0;
+    color:white;
+    font-size:.9rem;
+    cursor:pointer;
+    transition:background .2s,transform .2s;
+}
+
+.close-btn{margin-top:24px}
+.close-btn:hover,.back-btn:hover,.navbtn:hover{background:#d96d9a}
+
+#galleryView{
+    display:none;
+    position:relative;
+    z-index:1;
+    width:min(1120px,100%);
+    margin:auto;
+    padding:32px 18px 60px;
+}
+
+#galleryView.visible{display:block}
+
+.gallery-hero{text-align:center;padding:10px 0 22px}
+.gallery-hero h2{font-size:clamp(2rem,5vw,3rem);margin:8px 0}
+.gallery-hero p{color:#a45175;line-height:1.8}
+
+.back-btn{margin-top:20px}
+
+.panel{
+    background:rgba(255,255,255,.72);
+    border:1px solid white;
+    border-radius:28px;
+    padding:clamp(16px,4vw,30px);
+    box-shadow:0 18px 55px rgba(142,36,80,.09);
+    margin-top:18px;
+}
+
+.section-head{text-align:center;margin-bottom:20px}
+.section-head h2{font-size:clamp(1.5rem,4vw,2.2rem);margin-bottom:8px}
+.section-head p{color:#81536a;line-height:1.7;font-size:.9rem}
+
+.toolbar{
+    display:flex;
+    flex-wrap:wrap;
+    gap:9px;
+    justify-content:center;
+    margin:18px 0;
+}
+
+.filter,.viewer-btn{
+    border:1px solid #e9a8c3;
+    background:#fff8fb;
+    color:#9b2e5b;
+    border-radius:999px;
+    padding:10px 15px;
+    font-size:.85rem;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.filter.active,.filter:hover{background:#b83267;color:white}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:12px;
+}
+
+.photo{
+    position:relative;
+    display:block;
+    width:100%;
+    aspect-ratio:1;
+    border:4px solid white;
+    border-radius:16px;
+    background:#ffe3ee;
+    overflow:hidden;
+    box-shadow:0 7px 20px rgba(142,36,80,.12);
+    cursor:pointer;
+    padding:0;
+}
+
+.photo img{
+    display:block;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    transition:transform .3s;
+}
+
+.photo:hover img{transform:scale(1.05)}
+
+.photo-label{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    padding:7px;
+    background:linear-gradient(transparent,rgba(48,16,31,.75));
+    color:white;
+    text-align:left;
+    font-size:.7rem;
+}
+
+.pagination{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:22px;
+}
+
+#pageInfo{font-weight:700;font-size:.9rem;color:#8e2450}
+.navbtn:disabled{opacity:.4;cursor:not-allowed}
+
+.lightbox{
+    position:fixed;
+    inset:0;
+    z-index:30;
+    background:rgba(35,11,24,.94);
+    display:none;
+    align-items:center;
+    justify-content:center;
+    padding:18px;
+}
+
+.lightbox.open{display:flex}
+
+.lightbox-inner{
+    width:min(1100px,100%);
+    height:92vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+}
+
+.viewer-img{
+    max-width:100%;
+    max-height:calc(100% - 90px);
+    object-fit:contain;
+    border:4px solid white;
+    border-radius:12px;
+}
+
+.viewer-caption{color:white;text-align:center}
+
+.viewer-controls{
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+.viewer-btn{background:rgba(255,255,255,.12);color:white;border-color:#ffffff80}
+
+.close-viewer{
+    position:fixed;
+    right:18px;
+    top:16px;
+    font-size:1.5rem;
+    width:44px;
+    height:44px;
+    border:1px solid #ffffff80;
+    border-radius:50%;
+    background:rgba(255,255,255,.12);
+    color:white;
+    cursor:pointer;
+}
+
+@media(max-width:520px){
+    .container{padding:45px 17px}
+    .album-grid{gap:14px}
+    .album{min-height:175px;padding:22px 10px;border-radius:20px}
+    .album-icon{font-size:2.6rem}
+    .album-name{font-size:1.35rem}
+    .album-description{font-size:.68rem}
+    .grid{gap:6px}
+    .photo{border-width:3px;border-radius:10px}
+    .photo-label{font-size:.58rem;padding:5px}
+}
+</style>
+</head>
+
+<body>
+
+<div class="hearts" aria-hidden="true">
+    <span class="heart">💗</span>
+    <span class="heart">💕</span>
+    <span class="heart">💖</span>
+    <span class="heart">💗</span>
+    <span class="heart">💞</span>
+</div>
+
+<main class="container" id="homeView">
+    <p class="eyebrow">A little world made for you</p>
+    <h1>Something just for you,<br>my love 💗</h1>
+    <p class="subtitle">Four little corners, each made with love. Choose one, my love. 💌</p>
+
+    <div class="album-grid">
+        <button class="album" onclick="openAlbum('Read')">
+            <span class="album-icon">📖</span>
+            <span class="album-name">Read</span>
+            <span class="album-description">A little something to read</span>
+        </button>
+
+        <button class="album" onclick="openAlbum('Listen')">
+            <span class="album-icon">🎧</span>
+            <span class="album-name">Listen</span>
+            <span class="album-description">Something for your ears</span>
+        </button>
+
+        <button class="album" onclick="openGallery()">
+            <span class="album-icon">🎬</span>
+            <span class="album-name">See</span>
+            <span class="album-description">A little something to watch</span>
+        </button>
+
+        <button class="album" onclick="openAlbum('Admire')">
+            <span class="album-icon">🥹</span>
+            <span class="album-name">Admire</span>
+            <span class="album-description">Something beautiful for you</span>
+        </button>
+    </div>
+
+    <p class="bottom-note">Made with love, just for you 💗</p>
+</main>
+
+<div class="popup" id="albumPopup" role="dialog" aria-modal="true" onclick="closeOutside(event)">
+    <div class="popup-card">
+        <div class="popup-icon" id="popupIcon">💗</div>
+        <h2 id="popupTitle">A little surprise</h2>
+        <p id="popupText">Something special is waiting here.</p>
+        <button class="close-btn" onclick="closeAlbum()">Go back 💕</button>
+    </div>
+</div>
+
+<section id="galleryView">
+    <header class="gallery-hero">
+        <div style="font-size:3rem">💗</div>
+        <p class="eyebrow">A little scrapbook of us</p>
+        <h2>Our Memories 💕</h2>
+        <p>Our little memories, gathered in one pink corner.<br>Tap any picture to see it larger. 💌</p>
+        <button class="back-btn" onclick="closeGallery()">← Back to the four cards</button>
+    </header>
+
+    <section class="panel">
+        <div class="section-head">
+            <h2>Our Memories 📸</h2>
+            <p>Nine photos at a time · tap any picture to open it</p>
+        </div>
+
+        <div class="toolbar" id="filters"></div>
+        <div class="grid" id="gallery"></div>
+
+        <div class="pagination">
+            <button class="navbtn" id="prevPage">← Previous</button>
+            <span id="pageInfo" aria-live="polite"></span>
+            <button class="navbtn" id="nextPage">Next →</button>
+        </div>
+    </section>
+</section>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Photo viewer">
+    <button class="close-viewer" onclick="closeImage()" aria-label="Close">×</button>
+
+    <div class="lightbox-inner">
+        <img class="viewer-img" id="viewerImg" alt="A memory">
+        <div class="viewer-caption" id="viewerCaption"></div>
+
+        <div class="viewer-controls">
+            <button class="viewer-btn" onclick="openImage(currentImageIndex-1)">← Previous</button>
+            <button class="viewer-btn" onclick="openImage(currentImageIndex+1)">Next →</button>
+        </div>
+    </div>
+</div>
+
+<script>
+const albumDetails = {
+    Read: {
+    icon: "💌",
+    title: "A Letter From My Heart",
+    text: `Look whose there.....
+    Ohhhh, youuuuu???? aww My sweet little love what's up babe?
+    heard about your dumbness, o, sorry dullness, like you have been dull since yesterday, i know whats the matter though!
+    
+    i know i always hurt my little baby, but trust me i love my cutie sooooooooo much fr.
+    ittu shi hain ittu shi, or or mere mind me nachti rehti hain saaaraaaaaa time. Ganda baby.
+    Daddy ki Jan hain ap Jannnn.
+    
+    
+    Do you wanna know about your self? 
+    No? I take it as a yes, ganda baby.
+    
+    Someone who looks just like my baby-
+    Someone who acts just like my baby-
+    Someone who works just like my baby-
+    someone who laughs just like my baby-
+
+
+    You know what you are to me? My baby, a sweet little one, who gets annoyed from his "DADDY" but daddies very stuborn though....
+
+    You know daddy loves his little girl a lot, i know daddy always do mistakes, but i promise, this was the last tie, it will never happen again, even though i didnt even went to her i just added her but this was the mistake though, IM SO SORRY MY LOVE PLEASE FORGIVE YOUR BIG BIG DADDY< HE WONT DO THIS THING EVER AGAIN.
+
+    You are as beautiful as Ghufran and Aizal's love was.
+    As admirable as there story was.
+    As attracting as the Plains were for Raflesia.
+    As lovable as a newborn is always.
+
+    Twaku koni pata tusan kedy sohnry hiwy, zra dekho ta sai aap ku, ukka chan lagdy wy. Sakol pucho ta sadi jindri hiwy. Sada khuun hiwy sadi aas hiwy sadi raas hiwy sadi pyaas hiwy. Sadi thiwanr di sawyyr hiwy sadi dhallanr di sham hiwy, sadi tinky tinky di chahat hiwy, sakol ta pucho tusa'n hiwy keshy ta asa'n twady agu har shy waar desu. Sadi ekloti iyo jhain pasand hiwy, jejhin kadain koni. Dekh k twaku apry naal balawanr da dil aadhy.
+    Hiko gaal ty sidhi gaal. JY TUSA'N PUCHO K KONR HIWY, TA SADI JIND HIWY SADI JAN HIWY SADI SAWYYR SADI SHAM SADI RAAT SADI SAAH SADI AAH SADI JINDRI MEDY GURDY MEDA DIL MEDA HAAN MEDI HAR SHY.
+
+    Bahu'n pyari hein tu meku. Tu akhyn ta sadi jaan v hazir hy ae dunya kerhi shy.
+    MWAH! (Saraikiyan aali chummi)
+
+    Saraiki pasand hy na apko, Muehehehe. Kha jaunga, gandi, ruukhy jee ki bash kalyn na daddy ki Jan kha jaunga naaaa mera shzada chota sha baby, meri Jan hain ap, ap or apka "Hm" mera hy shilaf mera, kha jaunga apni Jan ko.
+
+
+`
+},
+    Listen: {
+    icon: "🎧",
+    title: "Songs Which Remind Me of YOU 💗",
+    text: `
+       
+
+        <div class="song-list">
+            <div class="song">
+               
+                <audio controls preload="metadata">
+                    <source src="song1.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <div class="song">
+                
+                <audio controls preload="metadata">
+                    <source src="song2.mp4" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <div class="song">
+               
+                <audio controls preload="metadata">
+                    <source src="song3.mpeg" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <div class="song">
+                
+                <audio controls preload="metadata">
+                    <source src="song4.mpeg" type="audio/mpeg">
+                </audio>
+            </div>
+
+            <div class="song">
+                
+                <audio controls preload="metadata">
+                    <source src="song5.mpeg" type="audio/mpeg">
+                </audio>
+            </div>
+        </div>
+    `
+},
+    Admire: {
+        icon:"🥹",
+        title:"A moment to admire",
+        text:"A special little corner, made with care just for you. 💗"
+    }
+};
+
+
+function openAlbum(name) {
+    const album = albumDetails[name];
+    if (!album) return;
+
+    document.getElementById("popupIcon").textContent = album.icon;
+    document.getElementById("popupTitle").textContent = album.title;
+    document.getElementById("popupText").innerHTML = album.text;
+
+    document.getElementById("popupText").style.whiteSpace = "pre-wrap";
+    document.getElementById("albumPopup").classList.add("show");
+    document.body.style.overflow = "hidden";
+}
+
+function closeReading() {
+    document.getElementById("readingPopup").classList.remove("show");
+    document.body.style.overflow = "";
+}
+
+
+function closeAlbum(){
+    document.getElementById("albumPopup").classList.remove("show");
+}
+
+function closeOutside(event){
+    if(event.target.id==="albumPopup")closeAlbum();
+}
+
+/*
+  Your screenshot shows memory-001, memory-002, etc.
+  The code tries common image extensions for each filename.
+  It assumes the images are directly inside the "images" folder.
+*/
+
+const memories=[];
+
+for(let i=1;i<=416;i++){
+    const number=String(i).padStart(3,"0");
+
+    memories.push({
+        number:i,
+        src:`images/memory-${number}`,
+        folder:i<=100?"Memories 1":
+               i<=200?"Memories 2":
+               i<=300?"Memories 3":
+               i<=400?"Memories 4":"Memories 5"
+    });
+}
+
+const extensions=[".jpg",".jpeg",".png",".webp",".JPG",".JPEG",".PNG",".WEBP"];
+
+let currentPage=1;
+let activeFolder="All";
+let currentImageIndex=0;
+let currentExtensionIndex=0;
+const perPage=9;
+
+function imageWithFallback(img,base){
+    let extIndex=0;
+
+    function tryNext(){
+        if(extIndex>=extensions.length){
+            img.dataset.failed="true";
+            img.alt="Image not found";
+            return;
+        }
+
+        img.src=base+extensions[extIndex];
+        extIndex++;
+    }
+
+    img.onerror=tryNext;
+    tryNext();
+}
+
+function openGallery(){
+    document.getElementById("homeView").style.display="none";
+    document.getElementById("galleryView").classList.add("visible");
+
+    renderFilters();
+    renderGallery();
+    window.scrollTo(0,0);
+}
+
+function closeGallery(){
+    closeImage();
+    document.getElementById("galleryView").classList.remove("visible");
+    document.getElementById("homeView").style.display="flex";
+    window.scrollTo(0,0);
+}
+
+function renderFilters(){
+    const el=document.getElementById("filters");
+    el.innerHTML="";
+
+    const folders=["All","Memories 1","Memories 2","Memories 3","Memories 4","Memories 5"];
+
+    folders.forEach(folder=>{
+        const button=document.createElement("button");
+        button.className="filter"+(folder===activeFolder?" active":"");
+        button.textContent=folder;
+        button.onclick=()=>{
+            activeFolder=folder;
+            currentPage=1;
+            renderFilters();
+            renderGallery();
+        };
+        el.appendChild(button);
+    });
+}
+
+function getFiltered(){
+    return activeFolder==="All"
+        ?memories
+        :memories.filter(memory=>memory.folder===activeFolder);
+}
+
+function renderGallery(){
+    const list=getFiltered();
+    const total=Math.max(1,Math.ceil(list.length/perPage));
+
+    if(currentPage>total)currentPage=total;
+
+    const start=(currentPage-1)*perPage;
+    const el=document.getElementById("gallery");
+    el.innerHTML="";
+
+    list.slice(start,start+perPage).forEach(memory=>{
+        const button=document.createElement("button");
+        button.className="photo";
+        button.setAttribute("aria-label","Open memory "+memory.number);
+
+        const img=document.createElement("img");
+        img.alt="Memory "+memory.number;
+        img.loading="lazy";
+        imageWithFallback(img,memory.src);
+
+        const label=document.createElement("span");
+        label.className="photo-label";
+        label.textContent="Memory "+memory.number;
+
+        button.append(img,label);
+
+        button.onclick=()=>{
+            currentImageIndex=memories.findIndex(
+                item=>item.number===memory.number
+            );
+            openImage(currentImageIndex);
+        };
+
+        el.appendChild(button);
+    });
+
+    document.getElementById("pageInfo").textContent=
+        "Page "+currentPage+" of "+total+" · "+list.length+" photos";
+
+    document.getElementById("prevPage").disabled=currentPage===1;
+    document.getElementById("nextPage").disabled=currentPage===total;
+}
+
+document.getElementById("prevPage").onclick=()=>{
+    if(currentPage>1){
+        currentPage--;
+        renderGallery();
+        window.scrollTo(0,0);
+    }
+};
+
+document.getElementById("nextPage").onclick=()=>{
+    const total=Math.ceil(getFiltered().length/perPage);
+
+    if(currentPage<total){
+        currentPage++;
+        renderGallery();
+        window.scrollTo(0,0);
+    }
+};
+
+function openImage(index){
+    if(!memories.length)return;
+
+    if(index<0)index=memories.length-1;
+    if(index>=memories.length)index=0;
+
+    currentImageIndex=index;
+
+    const memory=memories[index];
+    const img=document.getElementById("viewerImg");
+
+    img.onerror=null;
+    img.removeAttribute("src");
+    imageWithFallback(img,memory.src);
+
+    document.getElementById("viewerCaption").textContent=
+        "Memory "+memory.number+" · "+memory.folder+
+        " ("+(index+1)+" of "+memories.length+")";
+
+    document.getElementById("lightbox").classList.add("open");
+    document.body.style.overflow="hidden";
+}
+
+function closeImage(){
+    document.getElementById("lightbox").classList.remove("open");
+    document.body.style.overflow="";
+}
+
+document.getElementById("lightbox").addEventListener("click",event=>{
+    if(event.target.id==="lightbox")closeImage();
+});
+
+document.addEventListener("keydown",event=>{
+    if(event.key==="Escape"){
+        closeImage();
+        closeAlbum();
+    }
+
+    if(document.getElementById("lightbox").classList.contains("open")){
+        if(event.key==="ArrowLeft")openImage(currentImageIndex-1);
+        if(event.key==="ArrowRight")openImage(currentImageIndex+1);
+    }
+});
+</script>
+
+<style>
+.reading-popup {
+    position: fixed;
+    inset: 0;
+    z-index: 20;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    background: rgba(92, 32, 59, 0.45);
+    backdrop-filter: blur(8px);
+}
+
+.reading-popup.show {
+    display: flex;
+}
+
+.reading-card {
+    width: min(650px, 100%);
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 30px 24px;
+    background: linear-gradient(145deg, #fffafd, #ffe8f1);
+    border: 2px solid white;
+    border-radius: 26px;
+    box-shadow: 0 20px 60px rgba(85, 20, 49, 0.2);
+}
+
+.reading-card h2 {
+    font-family: 'Fuzzy Bubbles', cursive;
+    text-align: center;
+    font-size: clamp(1.6rem, 5vw, 2.3rem);
+    margin-bottom: 10px;
+}
+
+.reading-intro {
+    text-align: center;
+    color: #a45175;
+    margin-bottom: 20px;
+    line-height: 1.7;
+}
+
+#loveParagraph {
+    display: block;
+    width: 100%;
+    min-height: 260px;
+    resize: vertical;
+    padding: 18px;
+    border: 1px solid #edb1ca;
+    border-radius: 16px;
+    outline: none;
+    background: rgba(255, 255, 255, 0.85);
+    color: #8e2455;
+    font: 400 15px/1.9 'Poppins', sans-serif;
+}
+
+#loveParagraph:focus {
+    border-color: #d96d9a;
+    box-shadow: 0 0 0 3px rgba(232, 139, 176, 0.2);
+}
+
+.reading-buttons {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.reading-buttons button {
+    border: none;
+    border-radius: 25px;
+    padding: 11px 20px;
+    background: #e88bb0;
+    color: white;
+    font: 500 14px 'Poppins', sans-serif;
+    cursor: pointer;
+}
+
+.reading-buttons button:hover {
+    background: #d96d9a;
+}
+
+#saveMessage {
+    margin-top: 12px;
+    text-align: center;
+    color: #a45175;
+    font-size: 13px;
+}
+</style>
+
+<div class="reading-popup" id="readingPopup">
+    <div class="reading-card">
+        <h2>A Letter From My Heart 💌</h2>
+
+        <p class="reading-intro">
+            Write whatever your heart wants to say. 💗
+        </p>
+
+        <textarea
+            id="loveParagraph"
+            placeholder="My dearest Fatima...&#10;&#10;Start writing your paragraph here..."
+        ></textarea>
+
+        <div class="reading-buttons">
+            <button onclick="saveReading()">Save paragraph 💗</button>
+            <button onclick="closeReading()">Go back 💕</button>
+        </div>
+
+        <p id="saveMessage"></p>
+    </div>
+</div>
+
+<script>
+function saveReading() {
+    const paragraph = document.getElementById("loveParagraph").value;
+
+    try {
+        localStorage.setItem("fatimaReadingParagraph", paragraph);
+        document.getElementById("saveMessage").textContent =
+            "Your paragraph is saved on this browser 💗";
+    } catch (error) {
+        document.getElementById("saveMessage").textContent =
+            "Could not save automatically. Copy your paragraph somewhere safe.";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    try {
+        const saved = localStorage.getItem("fatimaReadingParagraph");
+        if (saved !== null) {
+            document.getElementById("loveParagraph").value = saved;
+        }
+    } catch (error) {
+        // Typing still works if browser storage is unavailable.
+    }
+});
+
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+        closeReading();
+    }
+});
+</script>
+
+</body>
+</html>
